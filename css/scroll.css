@@ -19,28 +19,30 @@
     text-align: center;
     overflow-y: auto;
     overflow-x: hidden;
+    position: relative;
 }
 
 .scrollBox>p {
     height: auto;
     min-height: 35%;
-    writing-mode: tb-rl;
     margin: 0 auto;
-    color: #fff;
     white-space: nowrap;
-    font-size: 0;
     padding: 50px 0;
-    letter-spacing: 8px;
+    letter-spacing: 0;
+    font-size: 0;
 }
 
 .scrollBox>p>span {
-    font-size: 160px;
+    font-size: 140px;
+    display: inline-block;
+    transform-origin: top left;
+    transform: rotate(90deg) translateX(0);
+    margin-left: 100vw;
+    height: 100vw;
+    line-height: 100vw;
+    color: #0CDAb2;
 }
 
-.chineseW {
-    transform: rotate(90deg);
-    display: inline-block;
-}
 
 /* 设置区域 */
 .setBox {
@@ -50,7 +52,7 @@
     width: 100%;
     height: 50px;
     background-color: #000;
-    /* background-color: rgb(10, 10, 10); */
+    opacity: 0.9;
     padding: 0 10px;
     box-sizing: border-box;
 }
@@ -73,7 +75,7 @@
     vertical-align: middle;
     margin: 0 10px;
     font-size: 14px;
-    width: calc(100% - 158px);
+    width: calc(100% - 162px);
     outline: none;
     color: #fff;
 }
@@ -95,13 +97,13 @@
 }
 
 
-/* 隐藏input */
+/* 输入抽屉 */
 .setBox1 {
     transition: all .5s;
     z-index: 20;
 }
 
-/* 设置 - 详细设置区域 */
+/* 字体颜色抽屉 */
 .setBox2 {
     height: max-content;
     padding: 10px 10px 5px 10px;
@@ -109,6 +111,7 @@
     bottom: -165px;
     transition: all .5s;
     z-index: 30;
+    /* position: relative; */
 }
 
 .setBox2>p {
@@ -129,6 +132,17 @@
 .thisP2 {
     border: 2px solid #696969 !important;
     /* box-sizing: border-box; */
+}
+
+
+/* 全屏 */
+#fullBtn{
+    font-size: 18px;
+    position: absolute;
+    right:10px;
+    top:5px;
+    color: #fff;
+    opacity: .8;
 }
 
 
@@ -158,7 +172,7 @@
     background-color: #696969;
     text-align: center;
     vertical-align: middle;
-    /* font-size: 14px; */
+    font-size: 13px;
     position: relative;
     border:2px solid transparent;
 }

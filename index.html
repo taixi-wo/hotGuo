@@ -4,9 +4,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="user-scalable=no, width=device-width" />
     <title>字幕动起来！</title>
+    <script src="tool/jquery.js"></script>
+    <script>
+        // 此代码需保持在head顶部
+        // 判断页面是否是在微信浏览器打开
+        // 对浏览器的UserAgent进行正则匹配，不含有微信独有标识的则为其他浏览器
+        // if (!isWeiXin()) {
+        //     window.location.href = "wxError.html";
+        // }
+        // function isWeiXin() {
+        //     var ua = window.navigator.userAgent.toLowerCase();
+        //     if (ua.match(/MicroMessenger/i) == 'micromessenger') {
+        //         return true;
+        //     } else {
+        //         return false;
+        //     }
+        // }
+    </script>
     <link rel="stylesheet" href="tool/font-awesome-4.7.0/css/font-awesome.min.css">
-    <!-- <link rel="stylesheet" href="./tool/layui-v2.5.5/css/layui.css"> -->
+    <link rel="stylesheet" href="css/main.css">
     <link rel="stylesheet" href="css/scroll.css">
 </head>
 
@@ -14,74 +32,15 @@
     <div class="box">
         <div class="scrollBox">
             <p id="p1">
-                <!-- <span>C</span>
-                <span>-</span>
-                <span>B</span>
-                <span>L</span>
-                <span>O</span>
-                <span>C</span>
-                <span>K</span>
-                <span>&</span>
-                <span>&</span>
-                <span>G</span>
-                <span>O</span>
-                <span>S</span>
-                <span>H</span>
-                <span class="chineseW">音</span>
-                <span class="chineseW">乐</span>
-                <span class="chineseW">节</span> -->
-
-                <span class="chineseW">应</span>
-                <span class="chineseW">援</span>
-                <span class="chineseW">弹</span>
-                <span class="chineseW">幕</span>
+                <span>应援弹幕</span>
             </p>
             <p id="p2">
-                <!-- <span>C</span>
-                <span>-</span>
-                <span>B</span>
-                <span>L</span>
-                <span>O</span>
-                <span>C</span>
-                <span>K</span>
-                <span>&</span>
-                <span>&</span>
-                <span>G</span>
-                <span>O</span>
-                <span>S</span>
-                <span>H</span>
-                <span class="chineseW">音</span>
-                <span class="chineseW">乐</span>
-                <span class="chineseW">节</span> -->
-
-                <span class="chineseW">应</span>
-                <span class="chineseW">援</span>
-                <span class="chineseW">弹</span>
-                <span class="chineseW">幕</span>
+                <span>应援弹幕</span>
             </p>
             <p id="p3">
-                <!-- <span>C</span>
-                <span>-</span>
-                <span>B</span>
-                <span>L</span>
-                <span>O</span>
-                <span>C</span>
-                <span>K</span>
-                <span>&</span>
-                <span>&</span>
-                <span>G</span>
-                <span>O</span>
-                <span>S</span>
-                <span>H</span>
-                <span class="chineseW">音</span>
-                <span class="chineseW">乐</span>
-                <span class="chineseW">节</span> -->
-
-                <span class="chineseW">应</span>
-                <span class="chineseW">援</span>
-                <span class="chineseW">弹</span>
-                <span class="chineseW">幕</span>
+                <span>应援弹幕</span>
             </p>
+
         </div>
         <div class="setBox setBox1">
             <p>
@@ -92,36 +51,35 @@
             </p>
         </div>
         <div class="setBox setBox2">
-            <!-- <p style="text-align:right;"><span class="confirmbtn">完成</span></p> -->
+            <i id="fullBtn" class="fa fa-arrows-alt"></i>
             <p>
                 <span>速度</span>
-                <span class="setSpan" onclick="speedFun(this,'slow')">慢</span>
-                <span class="setSpan thisP" onclick="speedFun(this,'normal')">一般</span>
-                <span class="setSpan" onclick="speedFun(this,'fast')">快</span>
+                <span class="setSpan" onclick="speedFun(this,15)">慢</span>
+                <span class="setSpan thisP" onclick="speedFun(this,10)">一般</span>
+                <span class="setSpan" onclick="speedFun(this,5)">快</span>
             </p>
             <p>
                 <span>字号</span>
-                <span class="setSpan" onclick="fSizeFun(this,'small')">小</span>
-                <span class="setSpan thisP" onclick="fSizeFun(this,'medium')">中</span>
-                <span class="setSpan" onclick="fSizeFun(this,'large')">大</span>
-                <span class="setSpan" onclick="fSizeFun(this,'extraLarge')">特大</span>
+                <span class="setSpan" onclick="fSizeFun(this,'100px')">小</span>
+                <span class="setSpan thisP" onclick="fSizeFun(this,'140px')">中</span>
+                <span class="setSpan" onclick="fSizeFun(this,'180px')">大</span>
+                <span class="setSpan" onclick="fSizeFun(this,'220px')">特大</span>
             </p>
             <p>
                 <span>颜色</span>
-                <span class="setSpan thisP2" onclick="colorFun(this,'#ffffff')" style="background-color: #fff;"></span>
-                <span class="setSpan" onclick="colorFun(this,'#0CDAb2')" style="background-color: #0CDAb2;"></span>
+                <span class="setSpan" onclick="colorFun(this,'#ffffff')" style="background-color: #ffffff;"></span>
+                <span class="setSpan thisP" onclick="colorFun(this,'#0CDAb2')" style="background-color: #0CDAb2;"></span>
                 <span class="setSpan" onclick="colorFun(this,'#EDFA00')" style="background-color: #EDFA00;"></span>
                 <span class="setSpan" onclick="colorFun(this,'#69E147')" style="background-color: #69E147;"></span>
                 <span class="setSpan" onclick="colorFun(this,'#FF008A')" style="background-color: #FF008A;"></span>
-                <span class="setSpan" onclick="colorFun(this,'#FFEF58')" style="background-color: #FFEF58;"></span>
+                <span class="setSpan" onclick="colorFun(this,'#FFEF58')" style="background-color: #FFEF58;margin-right: 0;"></span>
             </p>
         </div>
     </div>
 
     <div id="mask" onclick="closeFun()"></div>
+    
 </body>
-<script src="tool/jquery.js"></script>
-<!-- <script src="./tool/layui-v2.5.5/layui.js"></script> -->
 <script src="js/scroll.js"></script>
 
 </html>

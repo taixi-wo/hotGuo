@@ -1,24 +1,121 @@
-$(".scrollBox").on('click',function(){
-    hideSetBox($('.closeSet1'))
+$(function () {
+    setHeight();
+
 })
+// 解决旋转至竖直后文字重叠问题
+function setHeight() {
+    var spanWidth = $(".scrollBox>#p1>span").width();
+    $(".scrollBox>p").height(spanWidth);
+}
+// 确认输入+特殊字符翻转
+function confirmbtn() {
+    var context = $("#subtitleInp").val();
+    $(".scrollBox p").empty();
+    // 保持字体 保持颜色
+    $(".scrollBox p").append('<span style="font-size:' + spanSize + ';color:' + spanColor + '">' + context + '</span>');
+    // 保持间距
+    setHeight();
+    // 保持速度
+    clearScrollTime();
+}
+// 监听回车
+$('#subtitleInp').bind('keypress', function (event) { //回车事件绑定 
+    if (event.keyCode == "13") { //js监测到为为回车事件时 触发
+        event.preventDefault(); //阻止页面自动刷新，重复加载
+        confirmbtn();
+    }
+});
+
+
+
+// 无限滚动
+var fox = $(".scrollBox")[0];
+var p1 = $(".scrollBox>#p1")[0];
+var p2 = $(".scrollBox>#p2")[0];
+var speed = 10; //设置滚动速度
+var timer = window.setInterval("moveTop()", speed); //设置定时器
+function moveTop() {
+    if (p2.offsetTop - fox.scrollTop <= 0) { //当滚动至p1与p2交界时
+        fox.scrollTop -= p1.offsetHeight //父盒子跳到最顶端
+    } else {
+        fox.scrollTop++
+    }
+}
+// 重设滚动定时器
+function clearScrollTime() {
+    var inputVal = $("#subtitleInp").val();
+    if (inputVal == "" || inputVal == null) {
+        clearInterval(timer)
+    } else {
+        clearInterval(timer)
+        timer = setInterval(moveTop, speed)
+    }
+}
+
+
+
+// 速度
+function speedFun(el, value) {
+    $(el).parent('p').children('span').removeClass("thisP");
+    $(el).addClass("thisP");
+    speed = value;
+    clearScrollTime();
+}
+
+// 字号
+var spanSize = '160px';
+
+function fSizeFun(el, value) {
+    $(el).parent('p').children('span').removeClass("thisP");
+    $(el).addClass("thisP");
+
+    spanSize = value;
+    $(".scrollBox>p>span").css("font-size", spanSize);
+
+    setHeight();
+    clearScrollTime();
+}
+
+// 颜色
+var spanColor = "#0CDAb2";
+
+function colorFun(el, value) {
+    $(el).parent('p').children('span').removeClass("thisP").removeClass("thisP2");
+
+    spanColor = value;
+    if (value == "#ffffff") {
+        $(el).addClass("thisP2");
+    } else {
+        $(el).addClass("thisP");
+    }
+
+    $(".scrollBox>p>span").css("color", spanColor);
+}
+
+
 
 // 输入抽屉
 // 展开关闭输入设置抽屉
-var statusSet1 = true;
+var statusInpSet = true;
+
 function hideSetBox(el) {
-    if (statusSet1 == true) {
+    if (statusInpSet == true) {
         drawerFun($(".setBox1"), 'close');
         $(".closeSet1 i").attr("class", "fa fa-chevron-right")
-        statusSet1 = false;
-        var colorTime = window.setTimeout(function(){
-            $(el).animate({opacity:'.7'});
+        statusInpSet = false;
+        var colorTime = window.setTimeout(function () {
+            $(el).animate({
+                opacity: '.7'
+            });
         }, 1000); //设置定时器
-        
+
     } else {
         drawerFun($(".setBox1"), 'open');
         $(".closeSet1 i").attr("class", "fa fa-chevron-left")
-        statusSet1 = true;
-        $(el).animate({opacity:'1'});
+        statusInpSet = true;
+        $(el).animate({
+            opacity: '1'
+        });
     }
 }
 // 左侧抽屉方法
@@ -30,20 +127,35 @@ function drawerFun(el, value) {
         $(el).css('left', width);
     }
 }
+// 点击空白处，隐藏/显示输入抽屉
+$(".scrollBox").on('click', function () {
+    hideSetBox($('.closeSet1'))
+})
+// 移动端兼容性写法 - touchstart：触摸开始的时候触发
+// (问题：占用了滑动屏幕功能)
+// var box = document.getElementsByClassName('scrollBox')[0];
+// box.addEventListener('touchstart', function(event) {
+//      // 如果这个元素的位置内只有一个手指的话
+//      console.log(111)
+//     if (event.targetTouches.length == 1) {
+// 　　　　 event.preventDefault();// 阻止浏览器默认事件，重要 
+//         hideSetBox($('.closeSet1'))
+//         }
+// }, false);
 
 
-// 字号颜色抽屉
-// 展开详细设置抽屉
+
+// 展开字号颜色抽屉
 function setOpen() {
     $("#mask").show();
     drawerFun_ud($(".setBox2"), "open");
 }
-// 关闭底部抽屉
+// 关闭字号颜色抽屉
 function closeFun() {
     $("#mask").hide();
     drawerFun_ud($(".setBox2"), "close");
 }
-// 底部抽屉方法
+// 字号颜色抽屉方法
 function drawerFun_ud(el, value) {
     var height = '-' + ($(el).height() + 20) + 'px';
     if (value == "open") {
@@ -54,88 +166,46 @@ function drawerFun_ud(el, value) {
 }
 
 
-
-// 确认输入+特殊字符翻转
-function confirmbtn() {
-    var context = $("#subtitleInp").val();
-    $(".scrollBox p").empty();
-    var reg = new RegExp("[\\u4E00-\\u9FA5]+");
-    //  //匹配这些中文标点符号 [>this  。 ？ ！ ， 、 ； ：  this<]7num   “ ”  ‘ ’  ' （ ） 《 》 〈 〉 【 】 『 』 「 」  [>this   ﹃ ﹄  this<]2num    〔 〕 … — ～ ﹏  [>this  ￥ this<]1num
-    // // var reg2 = /[\u3002|\uff1f|\uff01|\uff0c|\u3001|\uff1b|\uff1a|\u201c|\u201d|\u2018|\u2019|\uff08|\uff09|\u300a|\u300b|\u3008|\u3009|\u3010|\u3011|\u300e|\u300f|\u300c|\u300d|\ufe43|\ufe44|\u3014|\u3015|\u2026|\u2014|\uff5e|\ufe4f|\uffe5]/;
-    // ￣ FFE3
-    var reg3 = /[\u3002|\uff1f|\uff01|\uff0c|\u3001|\uff1b|\uff1a|\ufe43|\ufe44|\uffe5|\uFFE3]/;
-    for (let i = 0; i < context.length; i++) {
-        if (reg.test(context[i]) || reg3.test(context[i])) {
-            // if (reg.test(context[i])) {
-            $(".scrollBox p").append('<span class="chineseW">' + context[i] + '</span>')
-        } else {
-            $(".scrollBox p").append('<span>' + context[i] + '</span>')
-        }
-    }
-    clearInterval(time)
-    time = setInterval(moveTop, speed)
-}
-
-
-// 无限滚动
-var fox = $(".scrollBox")[0];
-var p1 = $(".scrollBox>#p1")[0];
-var p2 = $(".scrollBox>#p2")[0];
-var speed = 10; //设置滚动速度
-var time = window.setInterval("moveTop()", speed); //设置定时器
-function moveTop() {
-    if (p2.offsetTop - fox.scrollTop <= 0) //当滚动至p1与p2交界时
-        fox.scrollTop -= p1.offsetHeight //父盒子跳到最顶端
-    else {
-        fox.scrollTop++
+// 全屏功能
+// 在支持全屏的浏览器中启动全屏
+// 整个页面 // 某个元素
+// launchFullScreen(document.documentElement);
+// launchFullScreen(document.getElementById("videoElement"));
+// 找到支持的方法, 使用需要全屏的 element 调用
+// 进入全屏
+function launchFullScreen(element) {
+    if (element.requestFullscreen) {
+        element.requestFullscreen();
+    } else if (element.mozRequestFullScreen) {
+        element.mozRequestFullScreen();
+    } else if (element.webkitRequestFullscreen) {
+        element.webkitRequestFullscreen();
+    } else if (element.msRequestFullscreen) {
+        element.msRequestFullscreen();
     }
 }
-//鼠标移上时清除定时器达到滚动停止的目的
-//鼠标移开时重设定时器，继续滚动
-// $(".scrollBox").hover(function () {
-//     clearInterval(time)
-// }, function () {
-//     time = setInterval(moveTop, speed)
-// });
-
-
-// 速度
-function speedFun(el, value) {
-    $(el).parent('p').children('span').removeClass("thisP");
-    $(el).addClass("thisP");
-    if(value=="slow"){
-        speed = 15;
-    }else if(value=="normal"){
-        speed = 10;
-    }else{
-        speed = 5;
-    }
-    clearInterval(time)
-    time = setInterval(moveTop, speed)
-}
-
-// 字号
-function fSizeFun(el, value) {
-    $(el).parent('p').children('span').removeClass("thisP");
-    $(el).addClass("thisP");
-    if (value == 'small') {
-        $(".scrollBox>p>span").css("font-size", "120px");
-    } else if (value == 'medium') {
-        $(".scrollBox>p>span").css("font-size", "160px");
-    } else if (value == 'large') {
-        $(".scrollBox>p>span").css("font-size", "200px");
-    } else if (value == 'extraLarge') {
-        $(".scrollBox>p>span").css("font-size", "240px");
+// 退出 全屏
+function exitFullscreen() {
+    if (document.exitFullscreen) {
+        document.exitFullscreen();
+    } else if (document.mozExitFullScreen) {
+        document.mozExitFullScreen();
+    } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
     }
 }
 
-// 颜色
-function colorFun(el, value) {
-    $(el).parent('p').children('span').removeClass("thisP").removeClass("thisP2");
-    if (value == "#ffffff") {
-        $(el).addClass("thisP2");
+// 全屏 进入/退出切换
+var fullScreen = false;
+$("#fullBtn").click(function () {
+    if (fullScreen == false) {
+        launchFullScreen(document.documentElement);
+        fullScreen = true;
+        $("#fullBtn").removeClass("fa fa-arrows-alt").addClass("fa fa-arrows");
     } else {
-        $(el).addClass("thisP");
+        // 调用退出全屏方法!
+        exitFullscreen();
+        fullScreen = false;
+        $("#fullBtn").removeClass("fa fa-arrows").addClass("fa fa-arrows-alt");
     }
-    $(".scrollBox>p").css("color", value);
-}
+})
