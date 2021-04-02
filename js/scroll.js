@@ -201,11 +201,11 @@ $("#fullBtn").click(function () {
     if (fullScreen == false) {
         launchFullScreen(document.documentElement);
         fullScreen = true;
-        $("#fullBtn").removeClass("fa fa-arrows-alt").addClass("fa fa-arrows");
+        $("#fullBtn").removeClass("fa fa-arrows-alt").addClass("fa fa-compress");
     } else {
         // 调用退出全屏方法!
         exitFullscreen();
         fullScreen = false;
-        $("#fullBtn").removeClass("fa fa-arrows").addClass("fa fa-arrows-alt");
+        $("#fullBtn").removeClass("fa fa-compress").addClass("fa fa-arrows-alt");
     }
 })
